@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night sky</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- céu -->
+  <div class="sky" aria-hidden="true">
+    <div id="stars" class="stars"></div>
+
+    <!-- estrelas cadentes -->
+    <div class="shooting-star" style="animation-delay:2s;"></div>
+  </div>
+
+  <!-- lua -->
+  <div class="moon-wrap" aria-hidden="true">
+    <div class="moon">
+      <span class="crater c1"></span>
+      <span class="crater c2"></span>
+      <span class="crater c3"></span>
+      <span class="crater c4"></span>
+    </div>
+  </div>
+
+  <!-- fala da Toupeira -->
+  <div class="speech" aria-live="polite">
+    <p>“I’m so glad we are all here.”</p>
+    <p>“I love you… and I also really like cake.”</p>
+  </div>
+
+  <!-- personagens -->
+  <img
+    src="./images/boy mole fox horse.png"
+    alt="O Menino, a Toupeira, a Raposa e o Cavalo olhando as estrelas"
+    class="characters"
+  >
+
+  <!-- conteúdo -->
+  <main>
+    <figure class="quote">
+      <figcaption class="line">
+        The truth is, everyone is a bit afraid.
+      </figcaption>
+
+      <svg class="ribbon" viewBox="0 0 1200 220" aria-hidden="true">
+        <path d="M10,160 C200,80 420,210 620,130 S1000,60 1190,110" class="trail"/>
+        <path d="M60,120 C240,40 460,150 660,90 S980,30 1160,70" class="trail"/>
+        <g class="stars-band">
+          <polygon class="star5" points="0,-9 2.6,-2.8 9,-2.8 3.2,1.1 5.5,8 0,4 -5.5,8 -3.2,1.1 -9,-2.8 -2.6,-2.8" transform="translate(170,120)"/>
+          <polygon class="star5" points="0,-7 2,-2.2 7,-2.2 2.4,0.9 4.2,6 0,3.2 -4.2,6 -2.4,0.9 -7,-2.2 -2,-2.2" transform="translate(330,140)"/>
+          <polygon class="star5" points="0,-12 3.5,-3.8 12,-3.8 4.3,1.5 7.2,10 0,5 -7.2,10 -4.3,1.5 -12,-3.8 -3.5,-3.8" transform="translate(590,110)"/>
+          <polygon class="star5" points="0,-8 2.4,-2.5 8,-2.5 2.9,1 4.8,6.4 0,3.4 -4.8,6.4 -2.9,1 -8,-2.5 -2.4,-2.5" transform="translate(840,90)"/>
+          <polygon class="star5" points="0,-10 2.8,-3 10,-3 3.4,1.2 5.2,8 0,4.6 -5.2,8 -3.4,1.2 -10,-3 -2.8,-3" transform="translate(1010,130)"/>
+        </g>
+      </svg>
+
+      <blockquote class="line">
+        But we are less afraid together.
+      </blockquote>
+    </figure>
+  </main>
+
+  <script>
+    // estrelas
+    const cont = document.getElementById('stars');
+    const TOTAL = 220;
+    const frag = document.createDocumentFragment();
+    for (let i=0;i<TOTAL;i++){
+      const s = document.createElement('span');
+      s.className = 'star';
+      const size = Math.random()*1.6 + .6;
+      s.style.width = size+'px';
+      s.style.height = size+'px';
+      s.style.left = Math.random()*100+'vw';
+      s.style.top  = Math.random()*100+'vh';
+      s.style.animationDelay = (Math.random()*5)+'s';
+      s.style.animationDuration = (2.5+Math.random()*3.5)+'s';
+      frag.appendChild(s);
+    }
+    cont.appendChild(frag);
+    // posiciona o balão acima dos personagens
+    const img = document.querySelector('.characters');
+    const bubble = document.querySelector('.speech');
+
+    function placeBubble(){
+      if(!img || !bubble) return;
+      const h = img.clientHeight || 0;
+      // 16px de folga
+      bubble.style.bottom = (h + 16) + 'px';
+    }
+
+    // chama ao carregar a imagem
+    if (img && !img.complete) {
+      img.addEventListener('load', placeBubble);
+    }
+    placeBubble();
+
+    // debounce no resize/orientação
+    let t; addEventListener('resize', () => {
+      clearTimeout(t); t = setTimeout(placeBubble, 120);
+    });
+  </script>
+</body>
+</html>
